@@ -1,0 +1,20 @@
+service: fastapi.serverless
+
+plugins:
+  - serverless-python-requirements
+custom:
+  pythonRequirements:
+    dockerizePip: non-linux
+
+provider:
+  name: aws
+  runtime: python3.7
+  stage: dev
+  region: us-east-1
+
+functions:
+  app:
+    handler: app.main.handler
+    events:
+      - http: ANY /
+      - http: 'ANY {proxy+}'
