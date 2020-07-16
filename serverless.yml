@@ -1,4 +1,4 @@
-service: fastapi.serverless
+service: fastapi-serverless
 
 plugins:
   - serverless-python-requirements
