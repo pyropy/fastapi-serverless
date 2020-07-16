@@ -1,12 +1,27 @@
 service: fastapi-serverless
-app: fastapi-serverless
+app: example
 org: pyropy
 
 plugins:
   - serverless-python-requirements
+
 custom:
   pythonRequirements:
+    slim: true
     dockerizePip: non-linux
+
+package:
+  exclude:
+    - tests/
+    - README.md
+    - .gitignore
+    - venv/
+    - node_modules/
+  include:
+    - app/
+    - requirements.txt
+    - package.json
+    - package-lock.json
 
 provider:
   name: aws
