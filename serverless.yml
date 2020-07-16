@@ -1,4 +1,6 @@
 service: fastapi-serverless
+app: fastapi-serverless
+org: pyropy
 
 plugins:
   - serverless-python-requirements
