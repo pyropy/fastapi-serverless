@@ -9,6 +9,13 @@ Globals:
     Timeout: 3
 
 Resources:
+
+  FastAPIGateway:
+    Type: AWS::Serverless::Api
+    Properties:
+      StageName: Prod
+      OpenApiVersion: '3.0.0'
+
   FastAPIFunction:
     Type: AWS::Serverless::Function
     Properties:
@@ -19,13 +26,15 @@ Resources:
         MainHandler:
           Type: Api
           Properties:
+            RestApiId:
+              Ref: FastAPIGateway
             Path: "/{proxy+}"
             Method: ANY
 
 Outputs:
-  FastAPI:
+  FastAPIGateway:
     Description: "API Gateway endpoint URL for Prod stage for FastAPI example function"
-    Value: !Sub "https://${ServerlessRestApi}.execute-api.${AWS::Region}.amazonaws.com/Prod/"
+    Value: !Sub FastAPIGateway.Arn
   FastAPIFunction:
     Description: "FastAPI Lambda Function ARN"
     Value: !GetAtt FastAPIFunction.Arn
