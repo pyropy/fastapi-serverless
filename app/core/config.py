@@ -36,6 +36,10 @@ class Settings(BaseSettings):
             path=f"/{values.get('DB_NAME') or ''}",
         )
 
+    FIRST_SUPERUSER: EmailStr
+    FIRST_SUPERUSER_PASSWORD: str
+    USERS_OPEN_REGISTRATION: bool = False
+    EMAIL_TEST_USER: str = "test@email.com"
 
     class Config:
         case_sensitive = True
