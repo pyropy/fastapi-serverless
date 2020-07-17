@@ -1,4 +1,5 @@
 .node_modules/
+.samconfig.toml
 .node_modules/*
 .serverless/
 # Created by .ignore support plugin (hsz.mobi)

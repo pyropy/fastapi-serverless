@@ -3,13 +3,39 @@ Transform: AWS::Serverless-2016-10-31
 Description: >
   fastapi-serverless
 
-
 Globals:
   Function:
     Timeout: 3
 
-Resources:
+Parameters:
+  LambdaSg:
+    Description: "Lambda security group ID"
+    Type: AWS::EC2::SecurityGroup::Id
+  LambdaSubnets:
+    Description: "Lambda subnets"
+    Type: List<AWS::EC2::Subnet::Id>
+  DBEndpoint:
+    Type: String
+    Description: "Database endpoint"
+  DBName:
+    Type: String
+    NoEcho: true
+    Description: "Database name"
+  DBUsername:
+    Type: String
+    NoEcho: true
+    Description: "Username for database access"
+  DBPassword:
+    Type: String
+    NoEcho: true
+    Description: "Password for database access"
+  SentryDsn:
+    Type: String
+    NoEcho: true
+    Description: "Sentry DSN url used for logging"
+   
 
+Resources:
   FastAPIGateway:
     Type: AWS::Serverless::Api
     Properties:
@@ -22,6 +48,20 @@ Resources:
       CodeUri: ./
       Handler: app.main.handler
       Runtime: python3.8
+      Policies:
+        - VPCAccessPolicy: {}
+      VpcConfig:
+        SecurityGroupIds:
+          - !Ref LambdaSg
+        SubnetIds: !Ref LambdaSubnets
+      Environment:
+        Variables:
+          DB_HOST: !Ref DBEndpoint
+          DB_PORT: 5432
+          DB_USER: !Ref DBUsername
+          DB_PASSWORD: !Ref DBPassword
+          DB_NAME: !Ref DBName
+          SENTRY_DSN: !Ref SentryDsn
       Events:
         MainHandler:
           Type: Api
